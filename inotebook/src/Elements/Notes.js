@@ -1,19 +1,21 @@
-import React, {useContext} from 'react'
+import React, { useContext } from "react";
 import noteContext from "../context/notes/noteContext";
-import Noteitem from './Noteitem';
+import AddNote from "./AddNote";
+import Noteitem from "./Noteitem";
 const Notes = () => {
-    const context = useContext(noteContext);
-  const {notes, setNotes} = context;
+  const context = useContext(noteContext);
+  const { notes, addNote } = context;
   return (
     <>
+      <AddNote/>
       <div className="row my-2">
         <h2>Your Notes</h2>
-        {notes.map((note)=>{
-            return <Noteitem note={note}/>
+        {notes.map((note) => {
+          return <Noteitem key={note._id} note={note} />;
         })}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Notes
+export default Notes;
