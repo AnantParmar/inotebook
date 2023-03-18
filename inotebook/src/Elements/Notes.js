@@ -2,31 +2,43 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import noteContext from "../context/notes/noteContext";
 import AddNote from "./AddNote";
 import Noteitem from "./Noteitem";
-const Notes = () => {
+import {useNavigate} from 'react-router-dom'
+const Notes = (props) => {
   const context = useContext(noteContext);
   const[note, setNote] = useState({id:"",etitle: "", edescription: "", etag: "default"})
   const { notes, getNotes, editNote } = context;
+  let navigate = useNavigate();
   useEffect(() => {
-    getNotes();
+    if(localStorage.getItem("token"))
+    {
+      getNotes();
+    }else {
+      navigate("/login");
+    }
     // eslint-disable-next-line
-  });
+  },[]);
   const ref = useRef(null);
   const refClose = useRef(null);
+
   const updateNote = (currentNote) => {
     ref.current.click();
     setNote({id: currentNote._id, etitle: currentNote.title, edescription: currentNote.description, etag: currentNote.tag})
+    // props.showAlert("Updated Successfully", "success")
   };
+
   const handleClick = (e) => {
     console.log("Updating Note"+note);
     editNote(note.id, note.etitle, note.edescription, note.etag)
     refClose.current.click();
   }
+
   const onChange = (e) => {
     setNote({...note, [e.target.name]: e.target.value})
   }
+
   return (
     <>
-      <AddNote />
+      <AddNote showAlert={props.showAlert} />
       <button
         ref={ref}
         type="button"
@@ -116,7 +128,8 @@ const Notes = () => {
               >
                 Close
               </button>
-              <button disabled={note.etitle.length<5 || note.edescription.length<5} type="button" className="btn btn-primary" onClick={()=>{handleClick()}}>
+              <button disabled={note.etitle.length<5 || note.edescription.length<5} type="button" className="btn btn-primary" onClick={()=>{handleClick()
+              props.showAlert("Updated Successfully", "success")}}>
                 Update Note
               </button>
             </div>
@@ -131,7 +144,7 @@ const Notes = () => {
         </div>
         {notes.map((note) => {
           return (
-            <Noteitem key={note._id} note={note} updateNote={updateNote} />
+            <Noteitem key={note._id} note={note} updateNote={updateNote} showAlert={props.showAlert}/>
           );
         })}
       </div>
