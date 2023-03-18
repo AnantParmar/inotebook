@@ -17,25 +17,43 @@ const Login = (props) => {
             body: JSON.stringify({email: credentials.email, password: credentials.password}),
           });
           const json = await response.json();
-
           console.log(json)
+
+          const userDetail = await fetch(`http://localhost:5000/api/auth/getuser`, {
+            method: "POST", 
+            headers: {
+              "Content-Type": "application/json",
+              "auth-token": json.authToken
+            },
+            body: JSON.stringify({email: credentials.email, password: credentials.password}),
+          });
+      
+          const axs = await userDetail.json();
+          console.log(axs.name)
+          // const getUser = await response.json();
+          // console.log(userDetail)
+
           if(json.success) {
             // Save the auth Token and redirect;
             // console.log(json.authToken)
             localStorage.setItem('token', json.authToken)
             // console.log(localStorage.getItem('token'))
             navigate("/");
-            props.showAlert("Logged In Successfully", "success")
+            props.setUser(axs.name)
+            props.showAlert(`Hey ${axs.name}, You are Logged In Successfully`, "success")
           } else {
             props.showAlert("Invalid Details", "danger")
           }
+
+          
     }
     const onChange = (e) => {
         setCreadentials({...credentials, [e.target.name]: e.target.value})
       }
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="container">
+      <h1>Login To iNoteBook</h1>
+      <form onSubmit={handleSubmit} className="my-3">
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email address
@@ -66,7 +84,7 @@ const Login = (props) => {
         </div>
 
         <button className="btn btn-primary" >
-          Submit
+          Login
         </button>
       </form>
     </div>

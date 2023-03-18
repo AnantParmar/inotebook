@@ -11,6 +11,8 @@ import Login from "./Elements/Login";
 import SignUp from "./Elements/SignUp";
 function App() {
   const [alert, setAlert] = useState(null);
+  const [user, setUser]=useState("")
+
   const showAlert = (message, type) => {
     setAlert({
       msg: message,
@@ -24,13 +26,13 @@ function App() {
     <>
       <NoteState>
         <BrowserRouter>
-          <Navbar />
+          <Navbar user={user} setUser={setUser}/>
           <Alert alert={alert} />
           <div className="container">
           <Routes>
             <Route exact path="/" element={<Home showAlert={showAlert} />} />
             <Route exact path="/about" element={<About />} />
-            <Route exact path="/login" element={<Login showAlert={showAlert}/>} />
+            <Route exact path="/login" element={<Login showAlert={showAlert} setUser={setUser}/>} />
             <Route exact path="/signup" element={<SignUp showAlert={showAlert}/>} />
           </Routes>
           </div>

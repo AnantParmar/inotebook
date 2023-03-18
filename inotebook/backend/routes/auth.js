@@ -99,6 +99,7 @@ router.post(
       };
       const authToken = jwt.sign(data, JWT_SECRET);
       success = true;
+      
       res.json({success, authToken });
     } catch (error) {
       console.log(error.message);
@@ -113,7 +114,7 @@ router.post("/getuser", fetchUser ,async (req, res) => {
     try {
       userId = req.user.id;
       const user = await User.findById(userId).select("-password");
-      res.send(user)
+      res.json(user)
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Internal Server Error");

@@ -20,7 +20,7 @@ const SignUp = (props) => {
       {
         console.log(json)
         localStorage.setItem('token', json.authtoken)
-        navigate("/");
+        navigate("/login");
         props.showAlert("Account Created Successfully", "success")
       } else {
         props.showAlert("Invalid Credentials", "danger")
@@ -33,7 +33,8 @@ const onChange = (e) => {
 
   return (
     <div className="container">
-      <form onSubmit={handleSubmit}>
+      <h1>SignUp To Explore iNoteBook</h1>
+      <form onSubmit={handleSubmit} className="my-2">
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Name
@@ -88,7 +89,7 @@ const onChange = (e) => {
         </div>
 
         <button type="submit" className="btn btn-primary">
-          Submit
+          SignUp
         </button>
       </form>
     </div>
